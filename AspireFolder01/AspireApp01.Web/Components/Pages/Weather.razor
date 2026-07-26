@@ -3,6 +3,8 @@
 @attribute [OutputCache(Duration = 5)]
 
 @inject WeatherApiClient WeatherApi
+@inject WeatherApiClient2 WeatherApi2
+@inject WeatherApiClientFromPython WeatherApiFromPython
 
 <PageTitle>Weather</PageTitle>
 
@@ -10,6 +12,7 @@
 
 <p>This component demonstrates showing data loaded from a backend API service.</p>
 
+<h2>apiservice</h2>
 @if (forecasts == null)
 {
     <p><em>Loading...</em></p>
@@ -39,11 +42,76 @@ else
     </table>
 }
 
+<h2>apiservice02</h2>
+@if (forecasts2 == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th aria-label="Temperature in Celsius">Temp. (C)</th>
+                <th aria-label="Temperature in Fahrenheit">Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts2)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2>pyapi01</h2>
+@if (forecastsFromPython == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th aria-label="Temperature in Celsius">Temp. (C)</th>
+                <th aria-label="Temperature in Fahrenheit">Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecastsFromPython)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
 @code {
     private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? forecasts2;
+    private WeatherForecast[]? forecastsFromPython;
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await WeatherApi.GetWeatherAsync();
+        forecasts2 = await WeatherApi2.GetWeatherAsync();
+        forecastsFromPython = await WeatherApiFromPython.GetWeatherAsync();
     }
 }

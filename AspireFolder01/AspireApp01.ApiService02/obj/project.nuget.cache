@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CQ+b2wtsAJU=",
+  "dgSpecHash": "A1urUHH7tmM=",
   "success": true,
   "projectFilePath": "/home/mauromi/git_repos/aspire/AspireFolder01/AspireApp01.ApiService02/AspireApp01.ApiService02.csproj",
   "expectedPackageFiles": [
@@ -27,7 +27,8 @@
     "/home/mauromi/.nuget/packages/opentelemetry.instrumentation.runtime/1.15.1/opentelemetry.instrumentation.runtime.1.15.1.nupkg.sha512",
     "/home/mauromi/.nuget/packages/polly.core/8.4.2/polly.core.8.4.2.nupkg.sha512",
     "/home/mauromi/.nuget/packages/polly.extensions/8.4.2/polly.extensions.8.4.2.nupkg.sha512",
-    "/home/mauromi/.nuget/packages/polly.ratelimiting/8.4.2/polly.ratelimiting.8.4.2.nupkg.sha512"
+    "/home/mauromi/.nuget/packages/polly.ratelimiting/8.4.2/polly.ratelimiting.8.4.2.nupkg.sha512",
+    "/home/mauromi/.nuget/packages/microsoft.netcore.app.host.linux-x64/10.0.10/microsoft.netcore.app.host.linux-x64.10.0.10.nupkg.sha512"
   ],
   "logs": [
     {
@@ -39,7 +40,8 @@
       "filePath": "/home/mauromi/git_repos/aspire/AspireFolder01/AspireApp01.ApiService02/AspireApp01.ApiService02.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
-        "net10.0"
+        "net10.0",
+        "net10.0/linux-x64"
       ]
     }
   ]

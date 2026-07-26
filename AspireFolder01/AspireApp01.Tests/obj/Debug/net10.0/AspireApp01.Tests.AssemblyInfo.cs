@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AspireApp01.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0c423e756d23658c24d43d3089deb42d73247d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0eb6c77384974aeb14655f8ba6797abe8f0ed5b")]
 [assembly: System.Reflection.AssemblyProductAttribute("AspireApp01.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AspireApp01.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

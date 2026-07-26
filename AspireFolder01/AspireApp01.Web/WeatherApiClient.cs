@@ -23,6 +23,14 @@ public class WeatherApiClient(HttpClient httpClient)
     }
 }
 
+// Second typed client: reuses the same logic as WeatherApiClient,
+// but receives an HttpClient configured towards "apiservice02".
+public class WeatherApiClient2(HttpClient httpClient) : WeatherApiClient(httpClient);
+
+// Third typed client: reuses the same logic as WeatherApiClient,
+// but receives an HttpClient configured towards "apiservice03".
+public class WeatherApiClientFromPython(HttpClient httpClient) : WeatherApiClient(httpClient);
+
 public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);

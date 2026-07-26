@@ -19,11 +19,17 @@ builder.Services.AddHttpClient<WeatherApiClient>(client =>
         client.BaseAddress = new("https+http://apiservice");
     });
 
-builder.Services.AddHttpClient<WeatherApiClient>(c =>
+builder.Services.AddHttpClient<WeatherApiClient2>(client =>
     {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        c.BaseAddress = new("https+http://apiservice02");
+        // Punta al secondo servizio. Stesso endpoint "/weatherforecast", servizio diverso.
+        client.BaseAddress = new("https+http://apiservice02");
+    });
+
+builder.Services.AddHttpClient<WeatherApiClientFromPython>(client =>
+    {
+        // The Python app (uvicorn/FastAPI) is exposed by Aspire in HTTPS:
+        // "https+http://" prefers HTTPS with fallback to HTTP.
+        client.BaseAddress = new("https+http://pyapi01");
     });
 
 var app = builder.Build();
