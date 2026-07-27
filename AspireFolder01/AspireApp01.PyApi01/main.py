@@ -51,11 +51,12 @@ async def read_weather_forecast():
 
     logger.info(f"Using API service base URL: {_apiservice_base_url()}")
 
-    # Recupera l'output di proxy_weather aspettando la coroutine.
+    """
+    # Retrieve the output of proxy_weather by awaiting the coroutine.
     x = await proxy_weather()
     logger.info(f"I've received {len(x)} records from apiservice: {x}")
-
     return x
+    """
 
     summaries = ["Helado", "Refrescante", "Frío", "Fresco", "Templado",
                  "Cálido", "Agradable", "Caliente", "Sofocante", "Abrumador"]

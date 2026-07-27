@@ -51,7 +51,7 @@ services:
       PORT: "8000"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://compose-dashboard:18889"
       OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
-      OTEL_SERVICE_NAME: "pyapi01"
+      OTEL_SERVICE_NAME: "PyApi03DockerCompose"
     expose:
       - "8000"
     networks:
