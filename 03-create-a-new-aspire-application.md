@@ -15,6 +15,7 @@ generated, run it locally, and understand how the pieces talk to each other.
 - [Run the app](#run-the-app)
 - [On which ports does an Aspire project run?](#on-which-ports-does-an-aspire-project-run)
 - [From `https+http://apiservice` to a real URL: service discovery](#from-httpshttpapiservice-to-a-real-url-service-discovery)
+- [Running the Aspire application in Debug mode via launch.json](#running-the-aspire-application-in-debug-mode-via-launchjson)
 
 ---
 
@@ -513,6 +514,124 @@ public class WeatherApiClient(HttpClient httpClient)
 public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
+```
+
+---
+
+## Running the Aspire application in Debug mode via launch.json
+
+> This section shows how to step‑through‑debug **both** the .NET AppHost and the
+> Python service. It references the Python service (`pyapi01`, registered with
+> `AddUvicornApp`) that is built in the [Python FastAPI](05-python-fastapi.md) and
+> [Integrate the Python app into Aspire](06-integrate-python-into-aspire.md) chapters —
+> come back here once that service exists.
+
+When you start **"Run Aspire AppHost"**, the .NET debugger attaches only to the
+AppHost process, **not** to the Python (uvicorn) process that Aspire launches
+separately. To stop on a breakpoint in `main.py` you must start Python under
+**debugpy** and then attach VS Code.
+
+The most robust solution with Aspire is to have the Python process start debugpy
+listening, then attach VS Code with the **"Attach to PyApi01"** configuration. The
+approach below implements a debugpy activator controlled by an environment variable
+(inert in production), set by Aspire only for the Python service.
+
+> **Watch out:** a "grey" breakpoint means that no Python debug session has attached
+> to it (it is not verified). There are two things to get right.
+
+### 1. You must start the second debug session (the attach)
+
+![The VS Code Run and Debug selector showing the Debug PyApi01, Attach to PyApi01, and Run Aspire AppHost configurations](_IMAGES/16b-debug-attach-pyapi01.png)
+
+Starting "Run Aspire AppHost" does not attach the debugger to Python. You must
+*also* launch the **"Attach to PyApi01 (debugpy 5678)"** configuration as a second
+session, while Aspire is running:
+
+1. Aspire is already running (F5 on "Run Aspire AppHost").
+2. In the Run and Debug selector choose **"Attach to PyApi01"** → F5. The breakpoint
+   should now turn red (bound).
+3. Click **"weather"** in the frontend → execution stops on `main.py`.
+
+### 2. The `--reload` problem
+
+Aspire launches `uvicorn … --reload`. With reload, uvicorn runs the app in a
+subprocess that is respawned whenever you save a file: this drops the attach and
+makes breakpoints grey again. For reliable debugging it is better to disable reload —
+which the AppHost registration below does programmatically.
+
+**`AppHost.cs`** — the Python registration with the debug environment variables and a
+`WithArgs` handler that strips `--reload`:
+
+```csharp
+var pyApi = builder.AddUvicornApp("pyapi01", "../AspireApp01.PyApi01", "main:app")
+    .WithUv()
+    .WithHttpEndpoint(port: 8000, env: "PORT")
+    .WithEnvironment("ENABLE_DEBUGPY", "1")
+    .WithEnvironment("PYDEVD_DISABLE_FILE_VALIDATION", "1")
+    .WithArgs(context =>
+    {
+        // Remove uvicorn's "--reload": the reloader respawns the worker process,
+        // which drops the debugpy attach and un-binds breakpoints. A single stable
+        // process makes step-through debugging in main.py reliable.
+        for (var i = context.Args.Count - 1; i >= 0; i--)
+        {
+            if (context.Args[i] is "--reload")
+            {
+                context.Args.RemoveAt(i);
+            }
+        }
+    })
+    .WithHttpHealthCheck("/health");
+```
+
+**`.vscode/launch.json`** — three configurations (launch the Python app directly,
+attach to the debugpy port, or run the .NET AppHost):
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug PyApi01 (FastAPI)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000"
+            ],
+            "cwd": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01",
+            "python": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01/.venv/bin/python",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Attach to PyApi01 (debugpy 5678)",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "127.0.0.1",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01",
+                    "remoteRoot": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01"
+                }
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "Run Aspire AppHost (.NET)",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/AspireFolder01/AspireApp01.AppHost/AspireApp01.AppHost.csproj"
+        }
+    ]
 }
 ```
 

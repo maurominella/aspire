@@ -43,9 +43,9 @@ each with its endpoints, health checks, logs, container info, dependencies and
 environment variables — and the frontend's **Weather** page shows data pulled from
 every backend, including the Python one.
 
-![The Aspire dashboard listing all four resources as Running/Healthy](_IMAGES/22-python-integrated-dashboard.png)
+![The Aspire dashboard listing all four resources as Running/Healthy](_IMAGES/25-deploy-start-dashboard.png)
 
-![The Weather page rendering forecasts returned by the Python FastAPI service](_IMAGES/23-python-integrated-weather.png)
+![The Weather page rendering forecasts returned by every backend, including the Python FastAPI service](_IMAGES/26-deploy-start-weather.png)
 
 ---
 

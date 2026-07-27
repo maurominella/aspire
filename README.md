@@ -119,6 +119,7 @@ whole thing as a continuous tutorial.
 - [Service discovery scheme resolution](https://aka.ms/dotnet/sdschemes)
 - [FastAPI](https://fastapi.tiangolo.com/) · [Uvicorn](https://www.uvicorn.org/)
 - [Azure Container Apps](https://learn.microsoft.com/azure/container-apps/)
+- [OpenTelemetry](https://opentelemetry.io/) · [Azure Monitor / Application Insights](https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview)
 
 ---
 
