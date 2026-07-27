@@ -1,0 +1,29 @@
+# ---- .NET build artifacts ----
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+*.user
+*.suo
+
+# ---- Environment / secrets ----
+.env
+.env.*
+*.env
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# ---- IDE / OS ----
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
