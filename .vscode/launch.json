@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug PyApi01 (FastAPI)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ],
+      "cwd": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01",
+      "python": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01/.venv/bin/python",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Attach to PyApi01 (debugpy 5678)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": {
+        "host": "127.0.0.1",
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01",
+          "remoteRoot": "${workspaceFolder}/AspireFolder01/AspireApp01.PyApi01"
+        }
+      ],
+      "justMyCode": true
+    },
+    {
+      "name": "Run Aspire AppHost (.NET)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/AspireFolder01/AspireApp01.AppHost/AspireApp01.AppHost.csproj"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ dependencies = [
     "azure-monitor-opentelemetry==1.8.9",
     "debugpy==1.8.21",
     "fastapi==0.139.2",
+    "httpx==0.28.1",
     "python-dotenv==1.2.2",
     "uvicorn[standard]==0.51.0",
 ]
