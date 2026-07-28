@@ -25,11 +25,9 @@ var pyApi = builder.AddUvicornApp("pyapi01", "../AspireApp01.PyApi01", "main:app
                 context.Args.RemoveAt(i);
             }
         }
-    })
-    
+    })    
     .WithReference(apiService)   // 👈 injects services__apiservice__http__0 / __https__0
     .WaitFor(apiService)         // 👈 starts pyapi01 only when apiservice is ready
-
     .WithHttpHealthCheck("/health");
 
 builder.AddProject<Projects.AspireApp01_Web>("webfrontend")
