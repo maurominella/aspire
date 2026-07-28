@@ -1,13 +1,6 @@
+using Aspire.Hosting.Foundry;
+
 var builder = DistributedApplication.CreateBuilder(args);
-
-/*
-// Docker Compose environment: it enables `aspire publish`/`aspire deploy`
-// to generate docker-compose.yaml, build the images, and run the containers.
-var compose = builder.AddDockerComposeEnvironment("compose");
-*/
-
-// Add the following line to configure the Azure Container App environment
-builder.AddAzureContainerAppEnvironment("aca");
 
 var apiService = builder.AddProject<Projects.AspireApp01_ApiService>("apiservice")
     .WithHttpHealthCheck("/health");
@@ -49,4 +42,30 @@ builder.AddProject<Projects.AspireApp01_Web>("webfrontend")
     .WaitFor(apiService02)
     .WaitFor(pyApi);
 
+
 builder.Build().Run();
+
+/*
+// Docker Compose environment: it enables `aspire publish`/`aspire deploy`
+// to generate docker-compose.yaml, build the images, and run the containers.
+var compose = builder.AddDockerComposeEnvironment("compose");
+
+// Add the following line to configure the Azure Container App environment
+builder.AddAzureContainerAppEnvironment("aca");
+*/ 
+
+/*
+var foundry = builder.AddFoundry("ai");
+var project = foundry.AddProject("project");
+
+var chat = foundry.AddDeployment("chat", FoundryModel.OpenAI.Gpt41);
+
+var webSearch = project.AddWebSearchTool("websearch");
+
+var researchAgent = project.AddPromptAgent("researcher", chat,
+    instructions: """
+        Answer product questions. Use web search when current information is needed.
+        """)
+    .WithTool(webSearch);
+
+*/
