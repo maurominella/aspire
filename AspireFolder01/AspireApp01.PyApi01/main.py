@@ -68,4 +68,4 @@ async def read_weather_forecast():
             "summary": random.choice(summaries),
         }
         for i in range(1, 6)
-    ] 
+    ]
