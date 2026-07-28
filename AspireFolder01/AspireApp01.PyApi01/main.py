@@ -26,7 +26,6 @@ def read_root():
 def health_check():
     return {"status": "healthy"}
 
-
 def _apiservice_base_url() -> str:
     # preferisci https, con fallback su http
     return (
@@ -35,11 +34,10 @@ def _apiservice_base_url() -> str:
         or "http://localhost:5000"  # fallback per esecuzione standalone
     )
 
-
 @app.get("/proxy-weather")
 async def proxy_weather():
     base = _apiservice_base_url()
-    logger.info(f"Chiamo apiservice su {base}")
+    logger.info(f"I'm calling apiservice at {base}")
     async with httpx.AsyncClient(verify=False) as client:  # dev cert self-signed
         resp = await client.get(f"{base}/weatherforecast")
         resp.raise_for_status()
@@ -51,11 +49,11 @@ async def read_weather_forecast():
 
     logger.info(f"Using API service base URL: {_apiservice_base_url()}")
 
-    """
     # Retrieve the output of proxy_weather by awaiting the coroutine.
     proxied_weather = await proxy_weather()
     logger.info(f"I've received {len(proxied_weather)} records from apiservice: {proxied_weather}")
     return proxied_weather
+    """
     """
 
     summaries = ["Helado", "Refrescante", "Frío", "Fresco", "Templado",

@@ -2,6 +2,20 @@ using Aspire.Hosting.Foundry;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var foundry = builder.AddFoundry("ai");
+var project = foundry.AddProject("project");
+
+var chat = project.AddModelDeployment("chat", FoundryModel.OpenAI.Gpt41);
+var realtime = project.AddModelDeployment("realtime", FoundryModel.OpenAI.GptRealtime);
+
+var webSearch = project.AddWebSearchTool("websearch");
+
+var researchAgent = project.AddPromptAgent("researcher", chat,
+    instructions: """
+        Answer product questions. Use web search when current information is needed.
+        """)
+    .WithTool(webSearch);
+
 var apiService = builder.AddProject<Projects.AspireApp01_ApiService>("apiservice")
     .WithHttpHealthCheck("/health");
 
@@ -10,9 +24,6 @@ var apiService02 = builder.AddProject<Projects.AspireApp01_ApiService02>("apiser
 
 var pyApi = builder.AddUvicornApp("pyapi01", "../AspireApp01.PyApi01", "main:app")
     .WithUv()
-    .WithHttpEndpoint(port: 8000, env: "PORT")
-    .WithEnvironment("ENABLE_DEBUGPY", "1")
-    .WithEnvironment("PYDEVD_DISABLE_FILE_VALIDATION", "1")
     .WithArgs(context =>
     {
         // Remove uvicorn's "--reload": the reloader respawns the worker process,
